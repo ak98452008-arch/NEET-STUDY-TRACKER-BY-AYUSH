@@ -1892,25 +1892,30 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 }
 </style>
-    <script>
-    function loadInitialChapters() {
+<script>
+    function forceLoadChapters() {
         const searchInput = document.getElementById("search-box");
-        if (searchInput) {
-            searchInput.value = "";
-        }
-        
+        const subFilter = document.getElementById("filter-subject");
+        const classFilter = document.getElementById("filter-class");
+        const statusFilter = document.getElementById("filter-status");
+
+        if (searchInput) searchInput.value = "";
+        if (subFilter) subFilter.value = "ALL";
+        if (classFilter) classFilter.value = "ALL";
+        if (statusFilter) statusFilter.value = "ALL";
+
         if (typeof applyFilters === "function") {
             applyFilters();
-        } else if (typeof renderChapters === "function") {
+        }
+        if (typeof renderChapters === "function") {
             renderChapters();
         }
     }
 
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", loadInitialChapters);
-    } else {
-        loadInitialChapters();
-    }
+    // Immediate & Delayed force triggers
+    window.addEventListener("DOMContentLoaded", forceLoadChapters);
+    window.addEventListener("load", forceLoadChapters);
+    setTimeout(forceLoadChapters, 300);
 
     document.addEventListener("input", function(e) {
         if (e.target && e.target.type === "range") {
@@ -1923,17 +1928,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 </script>
 
-
-    document.addEventListener("input", function(e) {
-        if (e.target && e.target.type === "range") {
-            const container = e.target.closest("div") || e.target.parentElement;
-            const label = container ? container.querySelector("span, label") : null;
-            if (label) {
-                label.innerText = "PYQs: " + e.target.value + "%";
-            }
-        }
-    });
-</script>
 
 
 
