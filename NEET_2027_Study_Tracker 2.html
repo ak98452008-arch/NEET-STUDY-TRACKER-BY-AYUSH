@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEET UG 2027 Study Tracker | Developed by @Ayush9845</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        neet: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                            accent: '#06b6d4',
+                            gold: '#f59e0b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #080d1a;
+            color: #f1f5f9;
+        }
+
+        .dark body {
+            background-color: #080d1a;
+            color: #f1f5f9;
+        }
+
+        body:not(.dark) {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        body:not(.dark) .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .glass-nav {
+            background: rgba(8, 13, 26, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        body:not(.dark) .glass-nav {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        /* Perspective for Flashcards */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+
+        .transform-style-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-neet-500 selection:text-white">
+
+    <!-- Header with Prominent Owner Attribution -->
+    <header class="sticky top-0 z-50 glass-nav transition-all duration-300">
+        <!-- Top Banner -->
+        <div class="bg-gradient-to-r from-neet-900 via-emerald-950 to-slate-900 text-white text-xs py-1.5 px-4 border-b border-emerald-500/20">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30 text-[10px] tracking-wider uppercase">NEET UG 2027 Target</span>
+                    <span class="hidden md:inline-block text-slate-300 text-[11px]"><i class="fa-solid fa-stethoscope text-emerald-400 mr-1"></i> Target Date: May 2, 2027 (02:00 PM IST)</span>
+                </div>
+                <!-- Owner Badge -->
+                <div class="flex items-center gap-2">
+                    <span class="text-slate-400 text-[11px]">Designed & Developed by</span>
+                    <button onclick="openModal('owner-modal')" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-extrabold text-[11px] hover:bg-emerald-500/30 transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-shield text-amber-400"></i> Owner: @Ayush9845
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Navigation Bar -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('dashboard')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-neet-600 to-emerald-400 flex items-center justify-center text-white text-xl font-black shadow-lg shadow-emerald-500/20">
+                        <i class="fa-solid fa-user-doctor"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl font-black bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">NEET 2027 Tracker</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">MBBS 2027</span>
+                        </div>
+                        <span class="text-[10px] text-slate-400 block -mt-1">Owner: @Ayush9845</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden md:flex items-center gap-1 lg:gap-2 text-xs font-bold">
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn px-3 py-2 rounded-xl text-slate-300 hover:text-emerald-400 hover:bg-slate-800/80 transition-all">
+                        <i class="fa-solid fa-gauge-high text-emerald-400 mr-1.5"></i>Dashboard
+                    </button>
+                    <button onclick="switchTab('tracker')" id="nav-tracker" class="nav-btn px-3 py-2 rounded-xl text-slate-300 hover:text-emerald-400 hover:bg-slate-800/80 transition-all">
+                        <i class="fa-solid fa-book-bookmark text-cyan-400 mr-1.5"></i>Chapter Tracker
+                    </button>
+                    <button onclick="switchTab('timer')" id="nav-timer" class="nav-btn px-3 py-2 rounded-xl text-slate-300 hover:text-emerald-400 hover:bg-slate-800/80 transition-all">
+                        <i class="fa-solid fa-stopwatch text-amber-400 mr-1.5"></i>Focus Timer
+                    </button>
+                    <button onclick="switchTab('flashcards')" id="nav-flashcards" class="nav-btn px-3 py-2 rounded-xl text-slate-300 hover:text-emerald-400 hover:bg-slate-800/80 transition-all">
+                        <i class="fa-solid fa-layer-group text-pink-400 mr-1.5"></i>NCERT Cards
+                    </button>
+                    <button onclick="switchTab('quiz')" id="nav-quiz" class="nav-btn px-3 py-2 rounded-xl text-slate-300 hover:text-emerald-400 hover:bg-slate-800/80 transition-all">
+                        <i class="fa-solid fa-bolt text-yellow-400 mr-1.5"></i>Mock Quiz
+                    </button>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-800/80 text-slate-300 hover:text-emerald-400 transition-all" title="Toggle Theme">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:inline text-amber-400"></i>
+                    </button>
+                    <button onclick="openModal('owner-modal')" class="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-neet-600 to-teal-600 text-white font-bold text-xs shadow-lg shadow-emerald-500/20 hover:scale-105 transition-all">
+                        <i class="fa-solid fa-crown text-amber-300"></i>
+                        <span>Owner: @Ayush9845</span>
+                    </button>
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl bg-slate-800 text-slate-300">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-slate-800 px-4 pt-2 pb-4 space-y-1">
+            <button onclick="switchTab('dashboard')" class="w-full text-left px-3 py-2.5 rounded-xl text-slate-200 hover:bg-slate-800 flex items-center gap-3 text-sm">
+                <i class="fa-solid fa-gauge-high text-emerald-400 w-5"></i> Dashboard
+            </button>
+            <button onclick="switchTab('tracker')" class="w-full text-left px-3 py-2.5 rounded-xl text-slate-200 hover:bg-slate-800 flex items-center gap-3 text-sm">
+                <i class="fa-solid fa-book-bookmark text-cyan-400 w-5"></i> Complete Chapter Tracker
+            </button>
+            <button onclick="switchTab('timer')" class="w-full text-left px-3 py-2.5 rounded-xl text-slate-200 hover:bg-slate-800 flex items-center gap-3 text-sm">
+                <i class="fa-solid fa-stopwatch text-amber-400 w-5"></i> NEET Focus Timer
+            </button>
+            <button onclick="switchTab('flashcards')" class="w-full text-left px-3 py-2.5 rounded-xl text-slate-200 hover:bg-slate-800 flex items-center gap-3 text-sm">
+                <i class="fa-solid fa-layer-group text-pink-400 w-5"></i> NCERT Flashcards
+            </button>
+            <button onclick="switchTab('quiz')" class="w-full text-left px-3 py-2.5 rounded-xl text-slate-200 hover:bg-slate-800 flex items-center gap-3 text-sm">
+                <i class="fa-solid fa-bolt text-yellow-400 w-5"></i> BrainBattle NEET Quiz
+            </button>
+            <div class="pt-3 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
+                <span>Developer & Owner</span>
+                <span class="font-extrabold text-emerald-400">@Ayush9845</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- NEET 2027 Countdown Banner -->
+    <section class="relative py-8 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/80 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Countdown Ticker -->
+                <div class="lg:col-span-8 text-center lg:text-left space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-400">
+                        <i class="fa-solid fa-hourglass-half text-amber-400 animate-spin"></i> Official Target: NEET UG 2027 Examination
+                    </div>
+
+                    <h1 class="text-2xl sm:text-4xl font-black text-white tracking-tight">
+                        Target <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">May 2, 2027</span> Countdown
+                    </h1>
+
+                    <!-- Live Ticking Countdown Box -->
+                    <div class="grid grid-cols-4 gap-2 sm:gap-4 max-w-xl mx-auto lg:mx-0 pt-2">
+                        <div class="glass-card p-3 sm:p-4 rounded-2xl text-center border border-emerald-500/20">
+                            <span id="cd-days" class="text-2xl sm:text-4xl font-black text-emerald-400 font-mono">000</span>
+                            <span class="block text-[10px] sm:text-xs text-slate-400 uppercase font-bold mt-1">Days</span>
+                        </div>
+                        <div class="glass-card p-3 sm:p-4 rounded-2xl text-center border border-emerald-500/20">
+                            <span id="cd-hours" class="text-2xl sm:text-4xl font-black text-cyan-400 font-mono">00</span>
+                            <span class="block text-[10px] sm:text-xs text-slate-400 uppercase font-bold mt-1">Hours</span>
+                        </div>
+                        <div class="glass-card p-3 sm:p-4 rounded-2xl text-center border border-emerald-500/20">
+                            <span id="cd-minutes" class="text-2xl sm:text-4xl font-black text-teal-300 font-mono">00</span>
+                            <span class="block text-[10px] sm:text-xs text-slate-400 uppercase font-bold mt-1">Minutes</span>
+                        </div>
+                        <div class="glass-card p-3 sm:p-4 rounded-2xl text-center border border-emerald-500/20">
+                            <span id="cd-seconds" class="text-2xl sm:text-4xl font-black text-amber-400 font-mono">00</span>
+                            <span class="block text-[10px] sm:text-xs text-slate-400 uppercase font-bold mt-1">Seconds</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Motivation & Quick Progress -->
+                <div class="lg:col-span-4">
+                    <div class="glass-card rounded-3xl p-6 border border-emerald-500/30 space-y-4 shadow-xl">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider"><i class="fa-solid fa-bullseye text-emerald-400 mr-1.5"></i> Overall Syllabus Target</span>
+                            <span id="overall-progress-pct" class="text-xs font-black text-emerald-400">0%</span>
+                        </div>
+                        <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700">
+                            <div id="overall-progress-bar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-800 text-xs text-slate-400 space-y-1.5">
+                            <div class="flex justify-between"><span>Total NEET Chapters:</span> <strong class="text-white" id="stat-total-ch">97</strong></div>
+                            <div class="flex justify-between"><span>Completed Chapters:</span> <strong class="text-emerald-400" id="stat-completed-ch">0</strong></div>
+                            <div class="flex justify-between"><span>Verified Owner:</span> <strong class="text-amber-400">@Ayush9845</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ================= TAB 1: DASHBOARD OVERVIEW ================= -->
+        <section id="tab-dashboard" class="tab-content block space-y-8">
+            <!-- Subject Metrics Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Physics Card -->
+                <div class="glass-card rounded-3xl p-6 border border-blue-500/20 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold">
+                                <i class="fa-solid fa-atom"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-white">Physics</h3>
+                                <p class="text-xs text-slate-400" id="phy-subtext">0 of 28 Chapters Done</p>
+                            </div>
+                        </div>
+                        <span class="text-lg font-black text-blue-400" id="phy-pct">0%</span>
+                    </div>
+                    <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                        <div id="phy-bar" class="h-full bg-blue-500 transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Chemistry Card -->
+                <div class="glass-card rounded-3xl p-6 border border-amber-500/20 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold">
+                                <i class="fa-solid fa-flask"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-white">Chemistry</h3>
+                                <p class="text-xs text-slate-400" id="chem-subtext">0 of 30 Chapters Done</p>
+                            </div>
+                        </div>
+                        <span class="text-lg font-black text-amber-400" id="chem-pct">0%</span>
+                    </div>
+                    <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                        <div id="chem-bar" class="h-full bg-amber-500 transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Biology Card -->
+                <div class="glass-card rounded-3xl p-6 border border-emerald-500/20 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold">
+                                <i class="fa-solid fa-dna"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-white">Biology</h3>
+                                <p class="text-xs text-slate-400" id="bio-subtext">0 of 39 Chapters Done</p>
+                            </div>
+                        </div>
+                        <span class="text-lg font-black text-emerald-400" id="bio-pct">0%</span>
+                    </div>
+                    <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                        <div id="bio-bar" class="h-full bg-emerald-500 transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Chart & Daily Habit Tracker Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Analytics Chart -->
+                <div class="lg:col-span-7 glass-card rounded-3xl p-6 border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-base font-bold text-white"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i> Focus Study Hours Log</h3>
+                        <span class="text-xs text-slate-400">Target: 8 Hrs/Day</span>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="studyHoursChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Daily Target Goals -->
+                <div class="lg:col-span-5 glass-card rounded-3xl p-6 border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-base font-bold text-white"><i class="fa-solid fa-list-check text-cyan-400 mr-2"></i> Daily Target Checklist</h3>
+                        <span class="text-xs text-emerald-400 font-bold">@Ayush9845 System</span>
+                    </div>
+
+                    <div id="daily-goals-container" class="space-y-2.5">
+                        <!-- Populated dynamically -->
+                    </div>
+
+                    <div class="pt-2 flex gap-2">
+                        <input type="text" id="new-goal-input" placeholder="Add goal (e.g., 50 NCERT Bio MCQs)..." class="flex-grow bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                        <button onclick="addDailyGoal()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-all">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: CHAPTER TRACKER (FULL NEET SYLLABUS) ================= -->
+        <section id="tab-tracker" class="tab-content hidden space-y-6">
+            <!-- Header & Filter Bar -->
+            <div class="glass-card rounded-3xl p-6 border border-slate-800 space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-black text-white flex items-center gap-2">
+                            <i class="fa-solid fa-book-bookmark text-emerald-400"></i> NEET 2027 Complete Chapter Syllabus
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">Track NCERT readings, short notes, PYQ percentage, and revision count.</p>
+                    </div>
+
+                    <div class="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-400 self-start md:self-auto">
+                        Curated for NEET 2027 by @Ayush9845
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-500 text-xs"></i>
+                        <input type="text" id="search-chapter" oninput="filterChapters()" placeholder="Search chapter name..." class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                    </div>
+
+                    <select id="filter-subject" onchange="filterChapters()" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                        <option value="ALL">All Subjects (Phy, Chem, Bio)</option>
+                        <option value="Physics">Physics Only</option>
+                        <option value="Chemistry">Chemistry Only</option>
+                        <option value="Biology">Biology Only</option>
+                    </select>
+
+                    <select id="filter-class" onchange="filterChapters()" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                        <option value="ALL">All Classes (11th & 12th)</option>
+                        <option value="Class 11">Class 11th Syllabus</option>
+                        <option value="Class 12">Class 12th Syllabus</option>
+                    </select>
+
+                    <select id="filter-status" onchange="filterChapters()" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                        <option value="ALL">All Statuses</option>
+                        <option value="Completed">Completed Only</option>
+                        <option value="In Progress">In Progress Only</option>
+                        <option value="Not Started">Not Started Only</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Chapter Cards Container -->
+            <div id="chapters-list-container" class="space-y-4">
+                <!-- Chapters populated via JavaScript -->
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: NEET POMODORO FOCUS TIMER ================= -->
+        <section id="tab-timer" class="tab-content hidden space-y-8">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-2xl font-black text-white">NEET High-Focus Pomodoro Timer</h2>
+                <p class="text-slate-400 text-xs mt-1">Sustain focused study blocks for maximum retention.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <div class="lg:col-span-7 glass-card rounded-3xl p-6 sm:p-8 text-center border border-slate-800">
+                    <div class="inline-flex p-1.5 rounded-2xl bg-slate-900 border border-slate-800 mb-6">
+                        <button onclick="setTimerMode('neet50', 50)" id="mode-neet50" class="timer-mode-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-emerald-600 text-white">
+                            NEET Block (50m)
+                        </button>
+                        <button onclick="setTimerMode('pomodoro25', 25)" id="mode-pomodoro25" class="timer-mode-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-400">
+                            Pomodoro (25m)
+                        </button>
+                        <button onclick="setTimerMode('break10', 10)" id="mode-break10" class="timer-mode-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-400">
+                            Break (10m)
+                        </button>
+                    </div>
+
+                    <div class="relative w-64 h-64 mx-auto my-4 flex items-center justify-center">
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="42" stroke="currentColor" stroke-width="6" class="text-slate-800" fill="transparent" />
+                            <circle id="timer-progress-ring" cx="50" cy="50" r="42" stroke="currentColor" stroke-width="6" class="text-emerald-500 transition-all duration-1000 ease-linear" stroke-dasharray="263.89" stroke-dashoffset="0" stroke-linecap="round" fill="transparent" />
+                        </svg>
+
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="main-timer-display" class="text-5xl font-black font-mono tracking-tight text-white">50:00</span>
+                            <span id="timer-status-text" class="text-xs uppercase tracking-widest font-bold text-emerald-400 mt-2">Focus Mode</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-center gap-4 mt-6">
+                        <button onclick="toggleTimer()" id="timer-toggle-btn" class="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-extrabold shadow-lg shadow-emerald-500/20 hover:scale-105 transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-play" id="timer-btn-icon"></i> <span id="timer-btn-label">START SESSION</span>
+                        </button>
+                        <button onclick="resetTimer()" class="p-3.5 rounded-2xl bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 glass-card rounded-3xl p-6 border border-slate-800 space-y-4">
+                    <h3 class="text-base font-bold text-white flex items-center justify-between">
+                        <span><i class="fa-solid fa-headphones text-emerald-400 mr-2"></i> Focus Soundscape</span>
+                        <span class="text-[10px] text-slate-400">Synthesizer Engine</span>
+                    </h3>
+
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-900 border border-slate-800">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+                                    <i class="fa-solid fa-cloud-rain"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-white">Soft Rain</div>
+                                    <div class="text-[10px] text-slate-400">Deep study noise</div>
+                                </div>
+                            </div>
+                            <button onclick="toggleAudio('rain', this)" class="p-2.5 rounded-xl bg-slate-800 text-slate-300 hover:bg-emerald-600 hover:text-white transition-all">
+                                <i class="fa-solid fa-play"></i>
+                            </button>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-900 border border-slate-800">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                                    <i class="fa-solid fa-wind"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-white">White Noise</div>
+                                    <div class="text-[10px] text-slate-400">Blocks external distractions</div>
+                                </div>
+                            </div>
+                            <button onclick="toggleAudio('whitenoise', this)" class="p-2.5 rounded-xl bg-slate-800 text-slate-300 hover:bg-emerald-600 hover:text-white transition-all">
+                                <i class="fa-solid fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: NCERT ACTIVE RECALL FLASHCARDS ================= -->
+        <section id="tab-flashcards" class="tab-content hidden space-y-6">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-2xl font-black text-white">NCERT Active Recall Flashcards</h2>
+                <p class="text-slate-400 text-xs mt-1">Revise core Biology terms, Chemistry mechanisms, and Physics formulas.</p>
+            </div>
+
+            <div class="max-w-2xl mx-auto space-y-4">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-300">
+                    <span><i class="fa-solid fa-dna text-emerald-400 mr-1.5"></i> High-Yield Flashcard</span>
+                    <span id="card-counter-badge" class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Card 1 of 5</span>
+                </div>
+
+                <div class="perspective-1000 w-full h-80 cursor-pointer" onclick="flipCard()">
+                    <div id="flashcard-inner" class="transform-style-3d relative w-full h-full rounded-3xl glass-card border border-slate-800 p-8 flex items-center justify-center text-center shadow-xl">
+                        <div class="absolute inset-0 backface-hidden p-8 flex flex-col justify-between items-center rounded-3xl">
+                            <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">QUESTION</span>
+                            <p class="text-lg font-bold text-white" id="flash-front">Loading question...</p>
+                            <span class="text-xs text-slate-500"><i class="fa-solid fa-hand-pointer mr-1"></i> Tap card to flip answer</span>
+                        </div>
+                        <div class="absolute inset-0 backface-hidden rotate-y-180 p-8 flex flex-col justify-between items-center rounded-3xl bg-slate-900 border border-emerald-500/40">
+                            <span class="text-[10px] font-bold text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">ANSWER & CONCEPT</span>
+                            <p class="text-sm font-medium text-slate-200" id="flash-back">Loading answer...</p>
+                            <span class="text-xs text-emerald-400"><i class="fa-solid fa-circle-check mr-1"></i> NCERT Verified</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-2">
+                    <button onclick="prevCard()" class="px-5 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs hover:bg-slate-700 transition-all">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Previous
+                    </button>
+                    <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-500 transition-all shadow-md">
+                        Next <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 5: MOCK QUIZ ================= -->
+        <section id="tab-quiz" class="tab-content hidden space-y-6">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-2xl font-black text-white">BrainBattle NEET Quiz</h2>
+                <p class="text-slate-400 text-xs mt-1">Practice high-yield NEET style questions.</p>
+            </div>
+
+            <div class="glass-card rounded-3xl p-6 sm:p-8 max-w-2xl mx-auto border border-slate-800 relative">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold" id="quiz-subject-badge">Biology PYQ</span>
+                    <span class="text-xs font-bold text-slate-300">Score: <strong class="text-emerald-400" id="quiz-score">0</strong></span>
+                </div>
+
+                <div id="quiz-question-box" class="py-6 space-y-6">
+                    <h3 class="text-base sm:text-lg font-bold text-white" id="quiz-q-text">Loading question...</h3>
+                    <div id="quiz-options" class="space-y-2.5"></div>
+                </div>
+
+                <div id="quiz-end-box" class="hidden py-8 text-center space-y-4">
+                    <i class="fa-solid fa-trophy text-4xl text-amber-400"></i>
+                    <h3 class="text-2xl font-black text-white">Quiz Completed!</h3>
+                    <p class="text-xs text-slate-400">You earned <strong class="text-emerald-400" id="final-score">0</strong> XP in NEET Mock Practice.</p>
+                    <button onclick="resetQuiz()" class="px-6 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500 transition-all">Try Again</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Owner Info Modal -->
+    <div id="owner-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden">
+        <div class="glass-card rounded-3xl max-w-md w-full p-6 border border-emerald-500/30 shadow-2xl relative space-y-5 text-center">
+            <button onclick="closeModal('owner-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-emerald-500 to-cyan-500 p-1 mx-auto shadow-lg">
+                <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center text-white text-3xl font-black">
+                    A
+                </div>
+            </div>
+
+            <div>
+                <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">Creator & Lead Developer</span>
+                <h3 class="text-xl font-bold text-white mt-2">NEET 2027 Tracker</h3>
+                <p class="text-amber-400 font-extrabold text-base">@Ayush9845</p>
+                <p class="text-slate-400 text-xs mt-2 leading-relaxed">
+                    Designed for NEET UG 2027 aspirants to systematically complete Physics, Chemistry, and Biology syllabus with real-time tracking, countdown, and active recall.
+                </p>
+            </div>
+
+            <div class="flex justify-center gap-3 pt-2">
+                <button onclick="closeModal('owner-modal')" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-500 transition-all">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="glass-nav border-t border-slate-800 mt-12 py-8 text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-xs">N</div>
+                <span class="text-white font-bold">NEET UG 2027 Tracker</span>
+                <span>Tailored for Aspirants.</span>
+            </div>
+
+            <div class="px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-slate-200 font-bold text-xs flex items-center gap-2">
+                <span>Designed & Built by</span>
+                <span class="text-emerald-400 font-extrabold"><i class="fa-solid fa-code text-amber-400 mr-1"></i> Owner: @Ayush9845</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Full NEET Syllabus Dataset
+        const defaultSyllabus = [
+            // PHYSICS CLASS 11
+            { id: 'p1', subject: 'Physics', class: 'Class 11', name: 'Physical World & Measurement', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p2', subject: 'Physics', class: 'Class 11', name: 'Kinematics', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p3', subject: 'Physics', class: 'Class 11', name: 'Laws of Motion', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p4', subject: 'Physics', class: 'Class 11', name: 'Work, Energy & Power', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p5', subject: 'Physics', class: 'Class 11', name: 'Rotational Motion', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p6', subject: 'Physics', class: 'Class 11', name: 'Gravitation', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p7', subject: 'Physics', class: 'Class 11', name: 'Properties of Solids & Fluids', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p8', subject: 'Physics', class: 'Class 11', name: 'Thermodynamics', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p9', subject: 'Physics', class: 'Class 11', name: 'Kinetic Theory of Gases', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p10', subject: 'Physics', class: 'Class 11', name: 'Oscillations & Waves', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+
+            // PHYSICS CLASS 12
+            { id: 'p11', subject: 'Physics', class: 'Class 12', name: 'Electrostatics', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p12', subject: 'Physics', class: 'Class 12', name: 'Current Electricity', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p13', subject: 'Physics', class: 'Class 12', name: 'Magnetic Effects of Current & Magnetism', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p14', subject: 'Physics', class: 'Class 12', name: 'Electromagnetic Induction & AC', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p15', subject: 'Physics', class: 'Class 12', name: 'Electromagnetic Waves', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p16', subject: 'Physics', class: 'Class 12', name: 'Ray & Wave Optics', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p17', subject: 'Physics', class: 'Class 12', name: 'Dual Nature of Matter & Radiation', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p18', subject: 'Physics', class: 'Class 12', name: 'Atoms & Nuclei', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'p19', subject: 'Physics', class: 'Class 12', name: 'Semiconductor Devices', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+
+            // CHEMISTRY CLASS 11
+            { id: 'c1', subject: 'Chemistry', class: 'Class 11', name: 'Some Basic Concepts of Chemistry', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c2', subject: 'Chemistry', class: 'Class 11', name: 'Structure of Atom', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c3', subject: 'Chemistry', class: 'Class 11', name: 'Classification of Elements & Periodicity', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c4', subject: 'Chemistry', class: 'Class 11', name: 'Chemical Bonding & Molecular Structure', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c5', subject: 'Chemistry', class: 'Class 11', name: 'Chemical Thermodynamics', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c6', subject: 'Chemistry', class: 'Class 11', name: 'Equilibrium', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c7', subject: 'Chemistry', class: 'Class 11', name: 'Redox Reactions', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c8', subject: 'Chemistry', class: 'Class 11', name: 'p-Block Elements', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c9', subject: 'Chemistry', class: 'Class 11', name: 'Organic Chemistry Basics (GOC)', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c10', subject: 'Chemistry', class: 'Class 11', name: 'Hydrocarbons', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+
+            // CHEMISTRY CLASS 12
+            { id: 'c11', subject: 'Chemistry', class: 'Class 12', name: 'Solutions', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c12', subject: 'Chemistry', class: 'Class 12', name: 'Electrochemistry', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c13', subject: 'Chemistry', class: 'Class 12', name: 'Chemical Kinetics', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c14', subject: 'Chemistry', class: 'Class 12', name: 'd and f-Block Elements', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c15', subject: 'Chemistry', class: 'Class 12', name: 'Coordination Compounds', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c16', subject: 'Chemistry', class: 'Class 12', name: 'Haloalkanes and Haloarenes', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c17', subject: 'Chemistry', class: 'Class 12', name: 'Alcohols, Phenols and Ethers', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c18', subject: 'Chemistry', class: 'Class 12', name: 'Aldehydes, Ketones & Carboxylic Acids', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c19', subject: 'Chemistry', class: 'Class 12', name: 'Amines', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'c20', subject: 'Chemistry', class: 'Class 12', name: 'Biomolecules', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+
+            // BIOLOGY CLASS 11
+            { id: 'b1', subject: 'Biology', class: 'Class 11', name: 'The Living World', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b2', subject: 'Biology', class: 'Class 11', name: 'Biological Classification', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b3', subject: 'Biology', class: 'Class 11', name: 'Plant Kingdom', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b4', subject: 'Biology', class: 'Class 11', name: 'Animal Kingdom', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b5', subject: 'Biology', class: 'Class 11', name: 'Morphology of Flowering Plants', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b6', subject: 'Biology', class: 'Class 11', name: 'Anatomy of Flowering Plants', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b7', subject: 'Biology', class: 'Class 11', name: 'Structural Organisation in Animals', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b8', subject: 'Biology', class: 'Class 11', name: 'Cell: The Unit of Life', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b9', subject: 'Biology', class: 'Class 11', name: 'Biomolecules', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b10', subject: 'Biology', class: 'Class 11', name: 'Cell Cycle and Cell Division', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b11', subject: 'Biology', class: 'Class 11', name: 'Photosynthesis in Higher Plants', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b12', subject: 'Biology', class: 'Class 11', name: 'Respiration in Plants', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b13', subject: 'Biology', class: 'Class 11', name: 'Plant Growth and Development', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b14', subject: 'Biology', class: 'Class 11', name: 'Breathing and Exchange of Gases', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b15', subject: 'Biology', class: 'Class 11', name: 'Body Fluids and Circulation', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b16', subject: 'Biology', class: 'Class 11', name: 'Excretory Products and Their Elimination', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b17', subject: 'Biology', class: 'Class 11', name: 'Locomotion and Movement', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b18', subject: 'Biology', class: 'Class 11', name: 'Neural Control and Coordination', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b19', subject: 'Biology', class: 'Class 11', name: 'Chemical Coordination and Integration', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+
+            // BIOLOGY CLASS 12
+            { id: 'b20', subject: 'Biology', class: 'Class 12', name: 'Sexual Reproduction in Flowering Plants', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b21', subject: 'Biology', class: 'Class 12', name: 'Human Reproduction', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b22', subject: 'Biology', class: 'Class 12', name: 'Reproductive Health', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b23', subject: 'Biology', class: 'Class 12', name: 'Principles of Inheritance and Variation', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b24', subject: 'Biology', class: 'Class 12', name: 'Molecular Basis of Inheritance', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b25', subject: 'Biology', class: 'Class 12', name: 'Evolution', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b26', subject: 'Biology', class: 'Class 12', name: 'Human Health and Disease', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b27', subject: 'Biology', class: 'Class 12', name: 'Microbes in Human Welfare', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b28', subject: 'Biology', class: 'Class 12', name: 'Biotechnology: Principles and Processes', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b29', subject: 'Biology', class: 'Class 12', name: 'Biotechnology and its Applications', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b30', subject: 'Biology', class: 'Class 12', name: 'Organisms and Populations', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b31', subject: 'Biology', class: 'Class 12', name: 'Ecosystem', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' },
+            { id: 'b32', subject: 'Biology', class: 'Class 12', name: 'Biodiversity and Conservation', ncErt: false, notes: false, pyqs: 0, rev: 0, status: 'Not Started' }
+        ];
+
+        // State initialization with localStorage
+        let appData = JSON.parse(localStorage.getItem('neet2027_data_v2')) || {
+            chapters: defaultSyllabus,
+            goals: [
+                { id: 1, text: "Read NCERT Bio - Molecular Basis", completed: true },
+                { id: 2, text: "Solve 30 Physics PYQs on Kinematics", completed: false },
+                { id: 3, text: "Complete 1 NEET 50-Min Focus Session", completed: true }
+            ]
+        };
+
+        function saveData() {
+            localStorage.setItem('neet2027_data_v2', JSON.stringify(appData));
+            updateMetrics();
+        }
+
+        // ================= Direct Live Countdown Timer to May 2, 2027 =================
+        const targetDate = new Date("2027-05-02T14:00:00+05:30").getTime();
+
+        function updateCountdown() {
+            const now = Date.now();
+            const diff = targetDate - now;
+
+            const elDays = document.getElementById("cd-days");
+            const elHours = document.getElementById("cd-hours");
+            const elMins = document.getElementById("cd-minutes");
+            const elSecs = document.getElementById("cd-seconds");
+
+            if (!elDays || !elHours || !elMins || !elSecs) return;
+
+            if (diff <= 0) {
+                elDays.innerText = "000";
+                elHours.innerText = "00";
+                elMins.innerText = "00";
+                elSecs.innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            elDays.innerText = String(days).padStart(3, '0');
+            elHours.innerText = String(hours).padStart(2, '0');
+            elMins.innerText = String(minutes).padStart(2, '0');
+            elSecs.innerText = String(seconds).padStart(2, '0');
+        }
+
+        // ================= Navigation Tabs =================
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            document.getElementById('mobile-menu').classList.add('hidden');
+            if (tabId === 'dashboard') renderDashboardCharts();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleTheme() { document.documentElement.classList.toggle('dark'); }
+        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        // ================= Render Chapter List =================
+        function filterChapters() {
+            const query = document.getElementById('search-chapter').value.toLowerCase();
+            const subject = document.getElementById('filter-subject').value;
+            const cls = document.getElementById('filter-class').value;
+            const status = document.getElementById('filter-status').value;
+
+            const filtered = appData.chapters.filter(ch => {
+                const matchName = ch.name.toLowerCase().includes(query);
+                const matchSub = subject === 'ALL' || ch.subject === subject;
+                const matchCls = cls === 'ALL' || ch.class === cls;
+                const matchStat = status === 'ALL' || ch.status === status;
+                return matchName && matchSub && matchCls && matchStat;
+            });
+
+            renderChapterList(filtered);
+        }
+
+        function renderChapterList(chapters) {
+            const container = document.getElementById('chapters-list-container');
+            container.innerHTML = '';
+
+            if (chapters.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-slate-500 text-xs">No chapters matched your filter criteria.</div>`;
+                return;
+            }
+
+            chapters.forEach(ch => {
+                const badgeColor = ch.subject === 'Physics' ? 'text-blue-400 bg-blue-500/10' : ch.subject === 'Chemistry' ? 'text-cyan-400 bg-cyan-500/10' : 'text-emerald-400 bg-emerald-500/10';
+
+                const card = `
+                    <div class="glass-card rounded-2xl p-4 sm:p-5 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="space-y-1.5 md:max-w-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full ${badgeColor}">${ch.subject}</span>
+                                <span class="text-[10px] text-slate-400 font-bold">${ch.class}</span>
+                            </div>
+                            <h4 class="text-sm font-bold text-white">${ch.name}</h4>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 items-center text-xs">
+                            <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
+                                <input type="checkbox" ${ch.ncErt ? 'checked' : ''} onchange="toggleField('${ch.id}', 'ncErt')" class="w-4 h-4 accent-emerald-500 rounded">
+                                <span>NCERT Read</span>
+                            </label>
+
+                            <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
+                                <input type="checkbox" ${ch.notes ? 'checked' : ''} onchange="toggleField('${ch.id}', 'notes')" class="w-4 h-4 accent-emerald-500 rounded">
+                                <span>Short Notes</span>
+                            </label>
+
+                            <div>
+                                <span class="text-[10px] text-slate-400 block">PYQs: <strong>${ch.pyqs}%</strong></span>
+                                <input type="range" min="0" max="100" value="${ch.pyqs}" onchange="updatePyq('${ch.id}', this.value)" class="w-24 accent-emerald-500">
+                            </div>
+
+                            <div class="flex items-center gap-1">
+                                <span class="text-[10px] text-slate-400 block mr-1">Revisions:</span>
+                                <button onclick="adjustRev('${ch.id}', -1)" class="w-6 h-6 rounded bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold">-</button>
+                                <span class="text-xs font-bold text-emerald-400 px-1.5">${ch.rev}</span>
+                                <button onclick="adjustRev('${ch.id}', 1)" class="w-6 h-6 rounded bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold">+</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <select onchange="updateStatus('${ch.id}', this.value)" class="bg-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-700 ${ch.status === 'Completed' ? 'text-emerald-400 border-emerald-500/50' : ch.status === 'In Progress' ? 'text-amber-400' : 'text-slate-400'}">
+                                <option value="Not Started" ${ch.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
+                                <option value="In Progress" ${ch.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                                <option value="Completed" ${ch.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', card);
+            });
+        }
+
+        function toggleField(id, field) {
+            const item = appData.chapters.find(c => c.id === id);
+            if (item) { item[field] = !item[field]; saveData(); }
+        }
+
+        function updatePyq(id, val) {
+            const item = appData.chapters.find(c => c.id === id);
+            if (item) { item.pyqs = parseInt(val); saveData(); }
+        }
+
+        function adjustRev(id, delta) {
+            const item = appData.chapters.find(c => c.id === id);
+            if (item) {
+                item.rev = Math.max(0, item.rev + delta);
+                saveData();
+                filterChapters();
+            }
+        }
+
+        function updateStatus(id, val) {
+            const item = appData.chapters.find(c => c.id === id);
+            if (item) { item.status = val; saveData(); }
+        }
+
+        // ================= Metrics Updater =================
+        function updateMetrics() {
+            const total = appData.chapters.length;
+            const completed = appData.chapters.filter(c => c.status === 'Completed').length;
+            const pct = total ? Math.round((completed / total) * 100) : 0;
+
+            document.getElementById('overall-progress-pct').innerText = `${pct}%`;
+            document.getElementById('overall-progress-bar').style.width = `${pct}%`;
+            document.getElementById('stat-total-ch').innerText = total;
+            document.getElementById('stat-completed-ch').innerText = completed;
+
+            // Physics Stats
+            const phy = appData.chapters.filter(c => c.subject === 'Physics');
+            const phyDone = phy.filter(c => c.status === 'Completed').length;
+            const phyPct = phy.length ? Math.round((phyDone / phy.length) * 100) : 0;
+            document.getElementById('phy-pct').innerText = `${phyPct}%`;
+            document.getElementById('phy-bar').style.width = `${phyPct}%`;
+            document.getElementById('phy-subtext').innerText = `${phyDone} of ${phy.length} Chapters Done`;
+
+            // Chem Stats
+            const chem = appData.chapters.filter(c => c.subject === 'Chemistry');
+            const chemDone = chem.filter(c => c.status === 'Completed').length;
+            const chemPct = chem.length ? Math.round((chemDone / chem.length) * 100) : 0;
+            document.getElementById('chem-pct').innerText = `${chemPct}%`;
+            document.getElementById('chem-bar').style.width = `${chemPct}%`;
+            document.getElementById('chem-subtext').innerText = `${chemDone} of ${chem.length} Chapters Done`;
+
+            // Bio Stats
+            const bio = appData.chapters.filter(c => c.subject === 'Biology');
+            const bioDone = bio.filter(c => c.status === 'Completed').length;
+            const bioPct = bio.length ? Math.round((bioDone / bio.length) * 100) : 0;
+            document.getElementById('bio-pct').innerText = `${bioPct}%`;
+            document.getElementById('bio-bar').style.width = `${bioPct}%`;
+            document.getElementById('bio-subtext').innerText = `${bioDone} of ${bio.length} Chapters Done`;
+
+            renderDailyGoals();
+        }
+
+        // ================= Daily Goals =================
+        function renderDailyGoals() {
+            const container = document.getElementById('daily-goals-container');
+            container.innerHTML = '';
+            appData.goals.forEach(g => {
+                const item = `
+                    <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-900 border border-slate-800 text-xs">
+                        <span class="${g.completed ? 'line-through text-slate-500' : 'text-slate-200'} font-medium">${g.text}</span>
+                        <input type="checkbox" ${g.completed ? 'checked' : ''} onchange="toggleGoal(${g.id})" class="w-4 h-4 accent-emerald-500">
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', item);
+            });
+        }
+
+        function toggleGoal(id) {
+            const goal = appData.goals.find(g => g.id === id);
+            if (goal) { goal.completed = !goal.completed; saveData(); }
+        }
+
+        function addDailyGoal() {
+            const input = document.getElementById('new-goal-input');
+            if (input.value.trim()) {
+                appData.goals.push({ id: Date.now(), text: input.value.trim(), completed: false });
+                input.value = '';
+                saveData();
+            }
+        }
+
+        // ================= Chart.js Focus Log =================
+        let hoursChart = null;
+        function renderDashboardCharts() {
+            const canvas = document.getElementById('studyHoursChart');
+            if (!canvas) return;
+            if (hoursChart) hoursChart.destroy();
+            
+            try {
+                const ctx = canvas.getContext('2d');
+                hoursChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        datasets: [{
+                            label: 'Hours Studied',
+                            data: [6.5, 8, 7.5, 9, 8.5, 10, 6],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            } catch (e) {
+                console.log("Chart render deferred.");
+            }
+        }
+
+        // ================= Focus Timer & Sound Synthesizer =================
+        let timerState = { mins: 50, remaining: 3000, total: 3000, isRunning: false, interval: null };
+        function setTimerMode(mode, mins) {
+            timerState.mins = mins;
+            timerState.total = mins * 60;
+            timerState.remaining = mins * 60;
+            if (timerState.isRunning) toggleTimer();
+            updateTimerDisplay();
+        }
+
+        function toggleTimer() {
+            const icon = document.getElementById('timer-btn-icon');
+            const label = document.getElementById('timer-btn-label');
+            if (timerState.isRunning) {
+                clearInterval(timerState.interval);
+                timerState.isRunning = false;
+                icon.className = "fa-solid fa-play";
+                label.innerText = "RESUME";
+            } else {
+                timerState.isRunning = true;
+                icon.className = "fa-solid fa-pause";
+                label.innerText = "PAUSE";
+                timerState.interval = setInterval(() => {
+                    if (timerState.remaining > 0) {
+                        timerState.remaining--;
+                        updateTimerDisplay();
+                    } else {
+                        clearInterval(timerState.interval);
+                        timerState.isRunning = false;
+                        if (typeof confetti === 'function') confetti({ particleCount: 100 });
+                        alert("NEET Focus Session Completed!");
+                    }
+                }, 1000);
+            }
+        }
+
+        function resetTimer() {
+            if (timerState.isRunning) toggleTimer();
+            timerState.remaining = timerState.total;
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(timerState.remaining / 60);
+            const s = timerState.remaining % 60;
+            document.getElementById('main-timer-display').innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        let audioCtx = null;
+        function toggleAudio(type, btn) {
+            if (audioCtx) { audioCtx.close(); audioCtx = null; }
+            const isPlaying = btn.classList.contains('bg-emerald-600');
+            if (!isPlaying) {
+                btn.className = "p-2.5 rounded-xl bg-emerald-600 text-white transition-all";
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const bufferSize = audioCtx.sampleRate * 2;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+                const src = audioCtx.createBufferSource();
+                src.buffer = buffer; src.loop = true;
+                const gain = audioCtx.createGain(); gain.gain.value = 0.08;
+                src.connect(gain); gain.connect(audioCtx.destination);
+                src.start();
+            } else {
+                btn.className = "p-2.5 rounded-xl bg-slate-800 text-slate-300 hover:bg-emerald-600 hover:text-white transition-all";
+            }
+        }
+
+        // ================= NCERT Flashcards =================
+        const flashcards = [
+            { front: "What is the site of Dark Reaction (Calvin Cycle) in Chloroplast?", back: "Stroma of the Chloroplast" },
+            { front: "What is the function of Sertoli cells in testes?", back: "Provide nutrition to developing spermatozoa." },
+            { front: "What is the hybridisation of xenon in XeF4?", back: "sp3d2 with square planar shape." },
+            { front: "What is the unit of Electric Flux?", back: "N·m²/C or V·m" }
+        ];
+        let cardIdx = 0;
+        function flipCard() { document.getElementById('flashcard-inner').classList.toggle('rotate-y-180'); }
+        function renderCard() {
+            const c = flashcards[cardIdx];
+            document.getElementById('flash-front').innerText = c.front;
+            document.getElementById('flash-back').innerText = c.back;
+            document.getElementById('card-counter-badge').innerText = `Card ${cardIdx + 1} of ${flashcards.length}`;
+            document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
+        }
+        function nextCard() { cardIdx = (cardIdx + 1) % flashcards.length; renderCard(); }
+        function prevCard() { cardIdx = (cardIdx - 1 + flashcards.length) % flashcards.length; renderCard(); }
+
+        // ================= BrainBattle Quiz =================
+        const quizQuestions = [
+            { q: "Which hormone causes ovulation in human females?", opts: ["Progesterone", "LH Surge", "FSH", "Estrogen"], correct: 1 },
+            { q: "What is the oxidation state of Cr in K2Cr2O7?", opts: ["+3", "+6", "+4", "+2"], correct: 1 },
+            { q: "What is the dimensional formula of Planck's Constant?", opts: ["ML²T⁻¹", "MLT⁻²", "ML²T⁻²", "ML⁻¹T⁻¹"], correct: 0 }
+        ];
+        let quizIdx = 0, quizScore = 0;
+        function renderQuiz() {
+            const q = quizQuestions[quizIdx];
+            document.getElementById('quiz-q-text').innerText = `${quizIdx + 1}. ${q.q}`;
+            const container = document.getElementById('quiz-options');
+            container.innerHTML = '';
+            q.opts.forEach((o, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 font-bold hover:border-emerald-500 transition-all";
+                btn.onclick = () => selectQuiz(idx);
+                btn.innerText = o;
+                container.appendChild(btn);
+            });
+        }
+        function selectQuiz(idx) {
+            if (idx === quizQuestions[quizIdx].correct) quizScore += 20;
+            document.getElementById('quiz-score').innerText = quizScore;
+            if (quizIdx < quizQuestions.length - 1) {
+                quizIdx++;
+                renderQuiz();
+            } else {
+                document.getElementById('quiz-question-box').classList.add('hidden');
+                document.getElementById('quiz-end-box').classList.remove('hidden');
+                document.getElementById('final-score').innerText = quizScore;
+            }
+        }
+        function resetQuiz() {
+            quizIdx = 0; quizScore = 0;
+            document.getElementById('quiz-score').innerText = 0;
+            document.getElementById('quiz-question-box').classList.remove('hidden');
+            document.getElementById('quiz-end-box').classList.add('hidden');
+            renderQuiz();
+        }
+
+        // ================= Initialization & Event Listeners =================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Immediate Live Countdown Run
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            // App state initializations
+            renderChapterList(appData.chapters);
+            updateMetrics();
+            renderDashboardCharts();
+            renderCard();
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>
