@@ -1639,6 +1639,258 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 </script>
+<!-- MODERN TELEGRAM SUGGESTIONS SECTION -->
+<style>
+.suggestion-section {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    margin: 45px auto 25px;
+    padding: 34px 22px;
+    max-width: 850px;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 28px;
+    text-align: center;
+    background: linear-gradient(135deg, #0b1220, #101c32 55%, #09243a);
+    box-shadow: 0 20px 60px rgba(0, 136, 204, 0.13);
+    font-family: inherit;
+    animation: suggestionEntrance .8s ease both;
+}
 
+.suggestion-section::before,
+.suggestion-section::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    filter: blur(65px);
+    opacity: .35;
+    pointer-events: none;
+}
+
+.suggestion-section::before {
+    background: #0ea5e9;
+    top: -120px;
+    left: -70px;
+    animation: suggestionOrb 7s ease-in-out infinite alternate;
+}
+
+.suggestion-section::after {
+    background: #6366f1;
+    bottom: -140px;
+    right: -60px;
+    animation: suggestionOrb 8s ease-in-out infinite alternate-reverse;
+}
+
+.suggestion-icon {
+    display: flex;
+    width: 66px;
+    height: 66px;
+    margin: 0 auto 19px;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border: 1px solid rgba(255,255,255,.22);
+    border-radius: 22px;
+    background: linear-gradient(145deg, #36bafa, #0879c9);
+    box-shadow: 0 10px 30px rgba(14,165,233,.3);
+    animation: suggestionFloat 3s ease-in-out infinite;
+}
+
+.suggestion-icon svg {
+    width: 34px;
+    height: 34px;
+}
+
+.suggestion-eyebrow {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 7px 12px;
+    border: 1px solid rgba(56,189,248,.25);
+    border-radius: 999px;
+    background: rgba(14,165,233,.1);
+    color: #7dd3fc;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.suggestion-title {
+    margin: 0;
+    color: #f8fafc;
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 900;
+    line-height: 1.25;
+    letter-spacing: -.7px;
+}
+
+.suggestion-title span {
+    color: #38bdf8;
+    background: linear-gradient(90deg, #7dd3fc, #38bdf8, #a5b4fc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.suggestion-description {
+    max-width: 510px;
+    margin: 13px auto 24px;
+    color: #aab9cc;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.suggestion-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    max-width: 100%;
+    padding: 15px 22px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.28);
+    border-radius: 15px;
+    background: linear-gradient(110deg, #229ed9, #0879c9);
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none;
+    box-shadow: 0 8px 28px rgba(34,158,217,.25);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.suggestion-button::before {
+    content: "";
+    position: absolute;
+    top: -60%;
+    left: -100%;
+    width: 45%;
+    height: 220%;
+    transform: rotate(25deg);
+    background: rgba(255,255,255,.25);
+    animation: suggestionShine 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.suggestion-button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 35px rgba(34,158,217,.4);
+}
+
+.suggestion-button:active {
+    transform: scale(.97);
+}
+
+.suggestion-button svg {
+    width: 23px;
+    height: 23px;
+    flex-shrink: 0;
+    transition: transform .3s ease;
+}
+
+.suggestion-button:hover svg {
+    transform: translateX(3px) rotate(-8deg);
+}
+
+.suggestion-note {
+    margin-top: 15px;
+    color: #8295ad;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+@keyframes suggestionEntrance {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes suggestionFloat {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-6px) rotate(2deg); }
+}
+
+@keyframes suggestionOrb {
+    from { transform: translate(0,0) scale(1); }
+    to { transform: translate(35px,25px) scale(1.2); }
+}
+
+@keyframes suggestionShine {
+    0%, 65% { left: -100%; }
+    100% { left: 150%; }
+}
+
+@media (max-width: 480px) {
+    .suggestion-section {
+        margin: 28px 12px;
+        padding: 29px 17px;
+        border-radius: 23px;
+    }
+
+    .suggestion-button {
+        width: 100%;
+        padding: 15px 13px;
+        font-size: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .suggestion-section,
+    .suggestion-icon,
+    .suggestion-section::before,
+    .suggestion-section::after,
+    .suggestion-button::before {
+        animation: none !important;
+    }
+
+    .suggestion-button,
+    .suggestion-button svg {
+        transition: none !important;
+    }
+}
+</style>
+
+<!-- Paste this section near the bottom of your homepage, before </main> or <footer> -->
+<section class="suggestion-section" aria-labelledby="suggestion-heading">
+    <div class="suggestion-icon" aria-hidden="true">
+        <!-- Telegram logo -->
+        <svg viewBox="0 0 24 24" fill="currentColor"
+             xmlns="http://www.w3.org/2000/svg">
+            <path d="M21.8 4.3 18.6 20c-.24 1.1-.87 1.37-1.76.85l-4.85-3.58-2.34 2.25c-.26.26-.48.48-.98.48l.35-4.93 8.98-8.11c.39-.35-.08-.55-.6-.2L6.3 13.85l-4.75-1.49c-1.03-.32-1.05-1.03.22-1.53L20.34 3.5c.86-.32 1.62.21 1.46.8Z"/>
+        </svg>
+    </div>
+
+    <div class="suggestion-eyebrow">Your Voice Matters</div>
+
+    <h2 class="suggestion-title" id="suggestion-heading">
+        Have an Idea? <span>Let's Improve Together.</span>
+    </h2>
+
+    <p class="suggestion-description">
+        Your feedback helps make this NEET preparation experience better.
+        Share your suggestions, ideas, or report an issue directly with the creator.
+    </p>
+
+    <a
+        class="suggestion-button"
+        href="https://t.me/Ayush9845"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Contact the creator on Telegram"
+    >
+        <svg viewBox="0 0 24 24" fill="currentColor"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M21.8 4.3 18.6 20c-.24 1.1-.87 1.37-1.76.85l-4.85-3.58-2.34 2.25c-.26.26-.48.48-.98.48l.35-4.93 8.98-8.11c.39-.35-.08-.55-.6-.2L6.3 13.85l-4.75-1.49c-1.03-.32-1.05-1.03.22-1.53L20.34 3.5c.86-.32 1.62.21 1.46.8Z"/>
+        </svg>
+        <span>Send Your Valuable Suggestions</span>
+    </a>
+
+    <p class="suggestion-note">
+        <i>Created With ❤️ By Ayush For All NEET Aspirants</i>
+    </p>
+</section>
 </body>
 </html>
