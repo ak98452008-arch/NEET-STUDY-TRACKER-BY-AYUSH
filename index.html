@@ -1892,6 +1892,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 }
 </style>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof renderChapters === "function") {
+            renderChapters();
+        } else if (typeof applyFilters === "function") {
+            applyFilters();
+        }
+    });
+</script>
+
 
 
 </section>
